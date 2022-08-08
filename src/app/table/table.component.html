@@ -1,0 +1,165 @@
+<div class="tracking-container">
+<h2>Order Tracking</h2>
+<form>
+  <div class="form-group row">
+    <div class="col-sm-4">
+      <input type="text" class="form-control" placeholder="ค้นหา">
+    </div>
+    <div class="col-sm-2">
+      <button (click)="toggleFilter()" type="button" class="filter btn" [ngClass]="isToggleFilter ? 'active-filter' : 'unactive-filter'"><i class="fa-solid fa-filter"></i> Filter</button>
+    </div>
+    <div class="col-sm-6 back">
+      <button type="button" class="filter btn addbook"><i class="fa-solid fa-plus"></i> Booking</button>
+    </div>
+  </div>
+</form>
+<form *ngIf="isToggleFilter == true">
+  <div class="form-group row">
+    <div class="col-sm">
+      <label class="label-text">Customer</label>
+      <select class="form-control" id="exampleFormControlSelect1">
+        <option>select</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+      </select>
+    </div>
+    <div class="col-sm">
+      <label class="label-text">Sitecode</label>
+      <select class="form-control" id="exampleFormControlSelect1">
+        <option>select</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+      </select>
+    </div>
+    <div class="col-sm">
+      <label class="label-text">Plant</label>
+      <select class="form-control" id="exampleFormControlSelect1">
+        <option>select</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+      </select>
+    </div>
+    <div class="col-sm">
+      <label class="label-text">Credit</label>
+      <select class="form-control" id="exampleFormControlSelect1">
+        <option>select</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+      </select>
+    </div>
+    <div class="col-sm">
+      <label class="label-text">Date Duration</label>
+      <input type="date" class="form-control">
+    </div>
+    <div class="col-sm">
+      <label class="label-text">Status</label>
+      <select class="form-control" id="exampleFormControlSelect1">
+        <option>select</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+      </select>
+    </div>
+    <div class="col-sm">
+      <label class="label-text">Sale</label>
+      <select class="form-control" id="exampleFormControlSelect1">
+        <option>select</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+      </select>
+    </div>
+  </div>
+</form>
+<div *ngIf="this.currentList.length != 0; else loader">
+  <div class="table-responsive-xl">
+    <table class="table">
+      <thead class="table-header">
+        <tr>
+          <th scope="col" colspan="2">Booking code</th>
+          <th scope="col">QO</th>
+          <th scope="col" colspan="2">Date / time</th>
+          <th scope="col">Customer</th>
+          <th scope="col">Site</th>
+          <th scope="col">Plant</th>
+          <th scope="col">Mix code</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">QC</th>
+          <th scope="col">Contact Person</th>
+          <th scope="col">Casting Method</th>
+          <th scope="col">Credit</th>
+          <th scope="col">Order Status</th>
+        </tr>
+      </thead>
+      <tbody class="table-body">
+        <tr *ngFor="let item of currentList">
+          <td colspan="2" scope="row">{{item.booking_code}}</td>
+          <td>{{ item.quotation_name }}</td>
+          <td colspan="2">{{ item.delivery_date +" "+ item.delivery_datetime }}</td>
+          <td>{{ item.company_name }}</td>
+          <td>{{ item.site_name }}</td>
+          <td>{{ item.plant_name }}</td>
+          <td>{{ item.product_name }}</td>
+          <td>{{item.quantity}}</td>
+          <td>
+            <div class="qc-credit-container"><i class="fa-solid fa-circle-check"></i>  3 </div>
+          </td>
+          <td>
+            <div>
+              {{ item.contact_name }}
+            </div>
+            <div class="tel">
+              {{ item.tel }}
+            </div>
+          </td>
+          <td>{{ item.casting_method }}</td>
+          <td>
+            <div class="qc-credit-container"><i class="check-icon fa-solid fa-check"></i>pass</div>
+          </td>
+          <td class="status-row">
+            <div class="status-container" [ngClass]="getStyleStatus(item.status)">{{ getWord(item.status) }}</div>
+            <span (click)="openStatusModal(item)" class="status-icon"><i data-toggle="modal" data-target="#exampleModalCenter" class="fa-solid fa-ellipsis-vertical"></i></span>
+            
+            
+
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pagination-right">
+      <div class="pagination-text-container">
+          {{ (this.currentPage * 20) + 1 }} - {{ this.currentPage == this.numberOfLastPage - 1 ? (this.list.length) : (this.currentPage+1)*20}} of {{ this.list.length }}
+      </div>
+      <span (click)="setToFirstPage()">
+          <i class="pagination-icon fa-solid fa-backward-step fa-md"></i>
+      </span>
+      <span (click)="previousPage()">
+          <i class="pagination-icon fa-solid fa-angle-left fa-md"></i>
+      </span>
+      <span (click)="nextPage()">
+          <i class="pagination-icon fa-solid fa-angle-right fa-md"></i>
+      </span>
+      <span (click)="setToLastPage()">
+          <i class="pagination-icon fa-solid fa-forward-step fa-md"></i>
+      </span>
+    </div>
+  </div>
+</div>
+<!-- <app-popup></app-popup> -->
+<ng-template #loader>
+  <app-loader></app-loader>
+</ng-template>
+
+</div>
+
+

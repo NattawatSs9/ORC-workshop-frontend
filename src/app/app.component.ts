@@ -7,4 +7,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'ORC-workshop-frontend';
+  toggle: boolean = false;
+  toggleSideBar(){
+    this.toggle = !this.toggle
+  }
 }

@@ -1,7 +1,13 @@
 import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { finalize, Observable } from 'rxjs';
+import { CompanyService } from '../services/company.service';
 import { OrderService } from '../services/order.service';
 import { Order } from '../types/Order';
+import { Company } from '../types/Company'
+import { site } from '../types/Site';
+import { SiteService } from '../services/site.service';
+import { PlantService } from '../services/plant.service';
+import { plant } from '../types/Plant';
 
 @Component({
   selector: 'app-table',
@@ -9,25 +15,31 @@ import { Order } from '../types/Order';
   styleUrls: ['./table.component.scss']
 })
 export class TableComponent implements OnInit {
-
+  searchText = "";
   orders$: Observable<Order[]> | undefined
+  staticOrder : Order[] | undefined;
   loading:boolean = false;
   list: Order[] = [];
   currentList : Order[] = []
   // Page Start at 0
   currentPage: number = 0;
   numberOfLastPage: number = 0;
-  constructor(private orderService: OrderService) { 
+  companyList?: Company[];
+  siteList? : site[];
+  plantList? : plant[]
+  companySelected : number = 0;
+  siteSelected : number = 0;
+  plantSelected : number = 0;
+  statusSelected: string = "";
+  
+
+  constructor(private orderService: OrderService, private companyService : CompanyService,
+    private siteService : SiteService, private plantService : PlantService) { 
   }
   isToggleFilter : boolean = false;
 
   ngOnInit(): void {
-    this.orders$ = this.orderService.getAllOrder();
-    this.orders$.subscribe(data => {
-      this.list = data
-      this.numberOfLastPage = Math.ceil(this.list.length / 20)
-      this.setCurrentList();
-    })
+    this.fetch();
   }
   
   setNumberOfLastPage () {
@@ -37,7 +49,7 @@ export class TableComponent implements OnInit {
   setCurrentList() {
     let newList : Order[] = [...this.list]
     this.currentList = newList.slice(this.currentPage * 20, (this.currentPage+1)*20)
-    console.log(this.currentList)
+
   }
 
   nextPage() {
@@ -83,5 +95,57 @@ export class TableComponent implements OnInit {
   }
   toggleFilter() {
     this.isToggleFilter = !this.isToggleFilter;
+  }
+  fetch() {
+    this.companySelected = 0
+    this.siteSelected = 0
+    this.plantSelected = 0
+    this.currentList = [];
+    this.list = [];
+    this.orders$ = this.orderService.getAllOrder();
+    this.orders$.subscribe(data => {
+      this.list = data
+      this.staticOrder = data
+      this.numberOfLastPage = Math.ceil(this.list.length / 20)
+      this.setCurrentList();
+      this.getAllCompany();
+      this.getAllPlant();
+    })
+  }
+  searchItem() {
+    if (this.searchText == "") {
+      this.list = this.staticOrder as Order[]
+    }
+    else {
+      this.list = this.list.filter((item) => item.contact_name.includes(this.searchText))
+    }
+    if (this.companySelected != 0) this.list = this.list.filter((item) => item.company_id == this.companySelected)
+    if (this.siteSelected != 0) this.list = this.list.filter((item) => item.site_id == this.siteSelected)
+    if (this.plantSelected != 0) this.list = this.list.filter((item) => parseInt(item.plant_id) == this.plantSelected)
+    if (this.statusSelected != '') this.list = this.list.filter((item) => item.status.toLowerCase() == this.statusSelected.toLowerCase())
+    this.setNumberOfLastPage()
+    this.setCurrentList()
+  }
+  getAllCompany() {
+    this.companyService.getCompany().subscribe(data => {
+      this.companyList = data
+    })
+  }
+  getAllSite(company_id : number) {
+    this.siteService.getAll(company_id).subscribe(data => {
+      this.siteList = data
+    })
+  }
+  getAllPlant() {
+    this.plantService.getAll().subscribe(data => {
+      this.plantList = data
+    })
+  }
+  companySelect() {
+    this.getAllSite(this.companySelected)
+    this.searchItem()
+  }
+  statusSelect() {
+    this.searchItem()
   }
 }

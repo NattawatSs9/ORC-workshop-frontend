@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  api: "https://orc-backend-without-container.herokuapp.com/api/"
 };

@@ -1,66 +1,50 @@
 <div class="form-container">
   <h2>Booking</h2>
-  <h3>Code: B-XXXX-X</h3>
+  <h3>Code: {{newBookingCode}}</h3>
 
   <form>
     <div class="form-row row">
       <div class="col-md-4">
-        <label>ชื่อ / บริษัท</label>
-        <select class="form-control">
-          <option>select</option>
-          <option>select</option>
-          <option>select</option>
-          <option>select</option>
+        <label>ชื่อ / บริษัท <span class="require">*</span></label>
+        <select [(ngModel)]="newCompany" class="form-control" name="company" (ngModelChange)="changeCompany()">
+            <option value="0" disabled>Select</option>
+          <option *ngFor="let company of companies" [ngValue]="company.company_id">
+              {{ company.company_name }}
+          </option>
         </select>
       </div>
       <div class="col-md-4">
-        <label>Site</label>
-        <select class="form-control">
-          <option>select</option>
-          <option>select</option>
-          <option>select</option>
-          <option>select</option>
+        <label>Site <span class="require">*</span></label>
+        <select [(ngModel)]="newSite" class="form-control" name="site" (ngModelChange)="changeSite()">
+            <option value="0" disabled>Select</option>
+            <option *ngFor="let site of sites" [ngValue]="site.site_id">{{site.site_name}}</option>
         </select>
       </div>
     </div>
     <div class="form-row row">
       <div class="col-md-4">
-        <label>ใบเสนอราคา (QO)</label>
-        <select class="form-control">
-          <option>select</option>
-          <option>select</option>
-          <option>select</option>
-          <option>select</option>
+        <label>ใบเสนอราคา (QO) <span class="require">*</span></label>
+        <select [(ngModel)]="newQuotation" (ngModelChange)="changeQuotation()" name="quotation" class="form-control">
+          <option value="0" disabled>Select</option>
+          <option  *ngFor="let quotation of quotations" [ngValue]="quotation.quotation_id">{{quotation.quotation_name}}</option>
         </select>
       </div>
       <div class="col-md-4">
-        <label>Plant</label>
-        <select class="form-control">
-          <option>select</option>
-          <option>select</option>
-          <option>select</option>
-          <option>select</option>
+        <label>Plant <span class="require">*</span></label>
+        <select [(ngModel)]="newPlant" class="form-control" name="plant">
+          <option value="0" disabled>Select</option>
+          <option *ngFor="let plant of plants" [ngValue]="plant.plant_id">{{ plant.plant_name }}</option>
         </select>
       </div>
     </div>
     <div class="form-row row">
       <div class="col-md-4">
-        <label>ชื่อผู้ติดต่อ</label>
-        <select class="form-control">
-          <option>select</option>
-          <option>select</option>
-          <option>select</option>
-          <option>select</option>
-        </select>
+        <label>ชื่อผู้ติดต่อ <span class="require">*</span></label>
+        <input class="form-control" type="text" [(ngModel)]="newContact" name="contact-person">
       </div>
       <div class="col-md-4">
-        <label>เบอร์โทรศัพท์</label>
-        <select class="form-control">
-          <option>select</option>
-          <option>select</option>
-          <option>select</option>
-          <option>select</option>
-        </select>
+        <label>เบอร์โทรศัพท์ <span class="require">*</span></label>
+        <input class="form-control" type="text" [(ngModel)]="newTel" name="contact-tel">
       </div>
     </div>
   </form>
@@ -69,58 +53,56 @@
   <form>
     <div class="form-row row">
       <div class="col-md-8">
-        <label>Company Name</label>
-        <select class="form-control">
-          <option>select</option>
-          <option>select</option>
-          <option>select</option>
-          <option>select</option>
+        <label>Mix code <span class="require">*</span></label>
+        <select [(ngModel)]="newProduct" class="form-control" name="product">
+          <option value="0" disabled>Select</option>
+          <option *ngFor="let product of products" [ngValue]="product.product_id">{{product.product_name}}</option>
         </select>
       </div>
     </div>
     <div class="form-row row">
-      <label>วันที่ส่งสินค้า</label>
+      <label>วันที่ส่งสินค้า <span class="require">*</span></label>
       <div class="col-md-4">
         <input class="form-control" type="date" />
       </div>
       <div class="time-container col-md-3 d-flex">
-        <select class="form-control">
-          <option>1</option>
+        <select [(ngModel)]="newHour" class="form-control" name="hour">
+          <option *ngFor="let hour of hours" [ngValue]="hour">{{hour}}</option>
         </select>
         :
-        <select class="form-control">
-          <option>1</option>
+        <select [(ngModel)]="newMin" class="form-control" name="min">
+          <option *ngFor="let min of mins" [ngValue]="min">{{min}}</option>
         </select>
         :
-        <select class="form-control">
-          <option>AM</option>
-          <option>PM</option>
+        <select [(ngModel)]="newPeriod" class="form-control" name="period">
+          <option value="AM">AM</option>
+          <option value="PM">PM</option>
         </select>
       </div>
     </div>
     <div class="form-row row">
       <div class="col-md-2">
-        <label>ปริมาณ</label>
-        <input class="form-control" type="number" />
+        <label>ปริมาณ <span class="require">*</span></label>
+        <input class="form-control" type="number" [(ngModel)]="newQuantity" name="quantity" />
       </div>
       <div class="col-md-4">
-        <label>Casting Method</label>
-        <input class="form-control" type="text" />
+        <label>Casting Method <span class="require">*</span></label>
+        <input class="form-control" type="text" [(ngModel)]="newCastingMathod" name="castingmethod" />
       </div>
     </div>
     <div class="form-row row">
       <div class="col-md-8">
         <label>รายละเอียดเพิ่มเติม (ราง, pump, etc.)</label>
-        <input class="form-control" />
+        <input class="form-control" type="text" [(ngModel)]="newMore" name="more"/>
       </div>
     </div>
     <div class="form-row row qc-container mt-2">
       <div class="col-md-1 d-flex">
-        <input type="checkbox" />
+        <input type="checkbox" [(ngModel)]="qcToggle" name="qc-checkbox"/>
         <label>QC Require</label>
       </div>
-      <div class="col-md-2">
-        <input class="form-control" type="number" />
+      <div class="col-md-2" *ngIf="qcToggle == true">
+        <input class="form-control" type="number" [(ngModel)]="newQCToggle" name="qc-input"/>
       </div>
     </div>
   </form>
@@ -130,8 +112,8 @@
     <div class="text-danger"><i class="fa-solid fa-trash-can"></i> Delete</div>
     <div class="response-container d-flex">
       <span>กลับหน้ารายการ</span>
-      <span>บันทึก</span>
-      <button class="btn btn-primary">ส่ง</button>
+      <button class="btn btn-send" (click)="addOrder()">บันทึก</button>
     </div>
   </div>
 </div>
+<app-popup [responseMessage]="responseAddForm" [errorMessage]="error" (toggleComponent)="toggleModalExit()" *ngIf="toggleModal == true"></app-popup>

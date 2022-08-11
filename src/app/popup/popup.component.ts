@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output,EventEmitter } from '@angular/core';
 import { Order } from '../types/Order';
 
 @Component({
@@ -7,11 +7,16 @@ import { Order } from '../types/Order';
   styleUrls: ['./popup.component.scss']
 })
 export class PopupComponent implements OnInit {
-  @Input() Order! : Order | undefined;
+  @Input() responseMessage : string | undefined;
+  @Input() errorMessage: string = "";
+  @Output() toggleComponent = new EventEmitter();
+  toggle : boolean = true
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  
+  toggleOverlay() {
+    this.toggleComponent.emit();
+  }
 }

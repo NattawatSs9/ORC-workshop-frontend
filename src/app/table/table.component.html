@@ -3,10 +3,13 @@
 <form>
   <div class="form-group row">
     <div class="col-sm-4">
-      <input type="text" class="form-control" placeholder="ค้นหา">
+      <input type="text" class="form-control" placeholder="ค้นหา" (input)="searchItem()" [(ngModel)]="searchText" name="search">
     </div>
-    <div class="col-sm-2">
-      <button (click)="toggleFilter()" type="button" class="filter btn" [ngClass]="isToggleFilter ? 'active-filter' : 'unactive-filter'"><i class="fa-solid fa-filter"></i> Filter</button>
+    <div class="col-sm-1">
+      <button (click)="toggleFilter()" type="button" class="filter btn" [ngClass]="isToggleFilter ? 'active-filter' : 'unactive-filter'"><i class="fa-solid fa-filter"></i>  Filter</button>
+    </div>
+    <div class="col-sm-1">
+      <button (click)="fetch()" type="button" class="filter btn" ><i class="fa-solid fa-arrow-rotate-right"></i>  Refresh</button>
     </div>
     <div class="col-sm-6 back">
       <button type="button" class="filter btn addbook"><i class="fa-solid fa-plus"></i> Booking</button>
@@ -16,67 +19,34 @@
 <form *ngIf="isToggleFilter == true">
   <div class="form-group row">
     <div class="col-sm">
-      <label class="label-text">Customer</label>
-      <select class="form-control" id="exampleFormControlSelect1">
-        <option>select</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
+      <label class="label-text">Company</label>
+      <select [(ngModel)]="companySelected" (ngModelChange)="companySelect()" class="form-control" id="exampleFormControlSelect1" name="company">
+        <option value="0">Unselect</option>
+        <option *ngFor="let company of companyList" [ngValue]="company.company_id">{{company.company_name}}</option>
       </select>
     </div>
     <div class="col-sm">
       <label class="label-text">Sitecode</label>
-      <select class="form-control" id="exampleFormControlSelect1">
-        <option>select</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
+      <select [(ngModel)]="siteSelected" class="form-control" id="exampleFormControlSelect1" (ngModelChange)="searchItem()" name="site">
+        <option value="0">Unselect</option>
+        <option *ngFor="let site of siteList" [ngValue]="site.site_id">{{site.site_name}}</option>
       </select>
     </div>
     <div class="col-sm">
       <label class="label-text">Plant</label>
-      <select class="form-control" id="exampleFormControlSelect1">
-        <option>select</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
+      <select [(ngModel)]="plantSelected" (ngModelChange)="searchItem()" class="form-control" id="exampleFormControlSelect1" name="plant">
+        <option value="0">Unselect</option>
+        <option *ngFor="let plant of plantList" [ngValue]="plant.plant_id">{{plant.plant_name}}</option>
       </select>
-    </div>
-    <div class="col-sm">
-      <label class="label-text">Credit</label>
-      <select class="form-control" id="exampleFormControlSelect1">
-        <option>select</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
-      </select>
-    </div>
-    <div class="col-sm">
-      <label class="label-text">Date Duration</label>
-      <input type="date" class="form-control">
     </div>
     <div class="col-sm">
       <label class="label-text">Status</label>
-      <select class="form-control" id="exampleFormControlSelect1">
-        <option>select</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
-      </select>
-    </div>
-    <div class="col-sm">
-      <label class="label-text">Sale</label>
-      <select class="form-control" id="exampleFormControlSelect1">
-        <option>select</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
+      <select [(ngModel)]="statusSelected" class="form-control" id="exampleFormControlSelect1" (ngModelChange)="statusSelect()" name="status">
+        <option value="''">Unselect</option>
+        <option value="Draft">Draft</option>
+        <option value="Submit">Submit</option>
+        <option value="CustomerConfirm">CustomerConfirm</option>
+        <option value="Cancel">Cancel</option>
       </select>
     </div>
   </div>
@@ -129,9 +99,6 @@
           <td class="status-row">
             <div class="status-container" [ngClass]="getStyleStatus(item.status)">{{ getWord(item.status) }}</div>
             <span (click)="openStatusModal(item)" class="status-icon"><i data-toggle="modal" data-target="#exampleModalCenter" class="fa-solid fa-ellipsis-vertical"></i></span>
-            
-            
-
           </td>
         </tr>
       </tbody>

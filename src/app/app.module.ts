@@ -8,7 +8,7 @@ import { FormComponent } from './form/form.component';
 import { TableComponent } from './table/table.component';
 import { LoaderComponent } from './loader/loader.component';
 import { PopupComponent } from './popup/popup.component';
-
+import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,7 +20,8 @@ import { PopupComponent } from './popup/popup.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
